@@ -1,4 +1,4 @@
-BASE_URL = "http://api/v1"
+BASE_URL = "http://127.0.0.1:8000/api/v1"
 TEST_LIST = [
     {
         "name": "API信息",

@@ -2,6 +2,8 @@
 控制模块，程序入口。
 """
 from common.document import output_event
+from common.obtain import get_reply
+from common.report import generate_report
 
 
 def main():
@@ -9,7 +11,8 @@ def main():
     try:
         while True:
             event = next(events)
-
+            reply = get_reply(event)
+            generate_report(reply)
     except StopIteration:
         pass
 
