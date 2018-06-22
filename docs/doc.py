@@ -9,8 +9,9 @@ TEST_LIST = [
             {
               "version": "1.0.1",
               "config": {
-                "network_id": "1",
-                "rpc_server": "https://mainnet.infura.io/llyrtzQ3YhkdESt2Fzrk"
+                "network_id": "51687",
+                "rpc_server": "https://mainnet.infura.io/llyrtzQ3YhkdESt2Fzrk",
+                "cc": 324
               }
             }
             """
