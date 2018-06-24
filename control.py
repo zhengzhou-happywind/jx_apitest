@@ -3,19 +3,22 @@
 """
 from common.document import output_event
 from common.obtain import get_reply
-from common.report import generate_report
+from common.report import generate_report, Polymerisation
 
 
 def main():
     events = output_event()
-    f = open('report.txt', 'w')
+    f = open('report.txt', 'w', encoding='utf-8')
+    polymerisation = Polymerisation(f)
     try:
         while True:
             event = next(events)
             reply = get_reply(event)
-            result = generate_report(reply, f)
+            report_dic = generate_report(reply, f)
+            polymerisation.report_append(report_dic)
     except StopIteration:
         pass
+    polymerisation.output()
     f.close()
 
 

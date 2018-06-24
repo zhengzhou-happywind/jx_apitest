@@ -1,4 +1,4 @@
-BASE_URL = "http://127.0.0.1:8000/api/v1"
+BASE_URL = "http://39.106.123.63:8008/api/v1"
 TEST_LIST = [
     {
         "name": "API信息",
@@ -11,7 +11,6 @@ TEST_LIST = [
               "config": {
                 "network_id": "51687",
                 "rpc_server": "https://mainnet.infura.io/llyrtzQ3YhkdESt2Fzrk",
-                "cc": 324
               }
             }
             """

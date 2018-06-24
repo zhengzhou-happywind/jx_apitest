@@ -5,6 +5,9 @@ from common.obtain import Reply
 
 
 class Fence(object):
+    """
+    对一条匹配结果的描述。
+    """
     level = {
         0: "完全相同",
         1: "值不同",
@@ -19,10 +22,22 @@ class Fence(object):
 
 
 class Result(object):
+    """
+    对一个API获得匹配结果。
+    """
+
     def __init__(self, name):
         self.name = name
         self.fences = []
         self.polymerization = None
+        # 记录是否通过
+        self.proper = True
+        # 记录各等级数量
+        self.statistics = {
+            1: 0,
+            2: 0,
+            3: 0,
+        }
 
     def _append(self, fence: Fence, level):
         fence.assess = level
@@ -64,8 +79,13 @@ class Result(object):
         """
         汇总每条结果。
         """
+
         for fence in self.fences:
             if fence.assess >= level:
+                self.proper = False
+                # 统计差异条目
+                self.statistics[fence.assess] += 1
+                # 输出差异条目
                 msg = "[%s]-{ %s }-%s\n" % (
                     fence.assess,
                     fence.since,
@@ -74,23 +94,44 @@ class Result(object):
                 f.write(msg)
 
 
-def generate_report(reply: Reply, f):
+class Polymerisation(object):
     """
-    一个api的报告
+        汇总报告形成总结
     """
+
+    def __init__(self, f):
+        # 文件句柄
+        self.f = f
+        self.report_list = []
+
+    def report_append(self, report: dict):
+        self.report_list.append(report)
+
+    def output(self):
+        for report in self.report_list:
+            if report['pass']:
+                pass
+            else:
+                pass
+
+
+def generate_report(reply: Reply, f, level):
+    """
+    整个api的报告
+    """
+    report_dic = {
+        "name": reply.name,
+        "level": level
+    }
     result = Result(reply.name)
     f.write(reply.name + ':\n')
     if not reply.error:
         result.one_fence('root', reply.example, reply.response)
         result.group_fences(2, f)
+        report_dic['pass'] = result.proper
+        report_dic['statistics'] = result.statistics
     else:
-        pass
-    return result
-
-
-def summary_report():
-    """
-    汇总报告形成总结
-    :return:
-    """
-    pass
+        f.write(reply.error)
+        report_dic['pass'] = False
+        report_dic['statistics'] = {'error': reply.error}
+    return report_dic
